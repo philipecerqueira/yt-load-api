@@ -5,6 +5,7 @@ Este é um projeto para baixar áudio de vídeos do YouTube e convertê-los para
 ## Estrutura de Diretórios
 
 A estrutura do projeto é a seguinte:
+
 ```
 YT LOAD
 ├── downloads # Diretório para armazenar temporariamente os arquivos baixados
@@ -24,6 +25,7 @@ YT LOAD
 │ └── main.py # Ponto de entrada da aplicação FastAPI, onde a aplicação é inicializada
 └── tests # Diretório para testes unitários e de integração da aplicação
 ```
+
 ## Como Rodar o Projeto
 
 ### Requisitos
@@ -48,3 +50,5 @@ YT LOAD
    ```
 
 O servidor será iniciado em `http://127.0.0.1:8000`, e você poderá acessar a documentação da API em `http://127.0.0.1:8000/docs`.
+
+![docs](image.png)

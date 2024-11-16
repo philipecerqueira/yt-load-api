@@ -49,6 +49,6 @@ YT LOAD
    pdm run start
    ```
 
-O servidor será iniciado em `http://127.0.0.1:8000`, e você poderá acessar a documentação da API em `http://127.0.0.1:8000/docs`.
+O servidor será iniciado em `http://127.0.0.1:8000`, e você poderá acessar a documentação da API em `http://127.0.0.1:8000/docs` ou `http://127.0.0.1:8000/redoc`.
 
 ![docs](image.png)

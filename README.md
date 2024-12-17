@@ -1,4 +1,4 @@
-# YT LOAD - Downloader de Áudio do YouTube
+# YT LOAD API - Downloader de Áudio do YouTube
 
 Este é um projeto para baixar áudio de vídeos do YouTube e convertê-los para o formato MP3. Utiliza as bibliotecas [pytubefix](https://pypi.org/project/pytubefix/) e [pydub](https://pydub.com/) para realizar o download e conversão, além de ser construído com o framework [FastApi](https://fastapi.tiangolo.com/) para fornecer uma API para interagir com o serviço.
 
@@ -26,7 +26,25 @@ YT LOAD
 └── tests # Diretório para testes unitários e de integração da aplicação
 ```
 
-## Como Rodar o Projeto
+## Como Rodar o Projeto com Docker
+
+### Requisitos
+
+- Docker e Docker Compose instalados no sistema.
+
+### Suba os containers em backgorund
+
+```bash
+docker-compose up -d
+```
+
+Caso deseje verificar os logs em tempo real execute:
+
+```bash
+docker-compose logs -f
+```
+
+## Como Rodar o Projeto Local
 
 ### Requisitos
 

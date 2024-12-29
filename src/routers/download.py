@@ -1,12 +1,11 @@
 import os
 import time
-from enum import Enum
 from typing import Optional
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
 
+from src.schemas.file_type import FileType
 from src.services.download_audio import download_audio_service
 from src.services.download_video import download_video_service
 from src.utils.logger_config import get_logger
@@ -14,16 +13,6 @@ from src.utils.remove_file import remove_file
 
 logger = get_logger(__name__)
 router = APIRouter()
-
-
-class FileType(str, Enum):
-    mp3 = "mp3"
-    mp4 = "mp4"
-
-
-class DownloadRequest(BaseModel):
-    url: str
-    file_type: Optional[FileType] = FileType.mp3
 
 
 @router.get("/download")

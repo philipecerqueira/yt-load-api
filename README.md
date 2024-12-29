@@ -13,6 +13,9 @@ YT LOAD
 │ ├── routers # Controladores de rotas da API, onde as rotas e endpoints são definidos
 │ │ ├── init.py
 │ │ └── download.py
+│ ├── schemas # Define a estrutura de dados esperada e permite a validação dos tipos de dados e formatos.
+│ │ ├── init.py
+│ │ └── file_type.py
 │ ├── services # Lógica de serviços de download e conversão, responsável por processar os arquivos
 │ │ ├── init.py
 │ │ └── download_audio.py

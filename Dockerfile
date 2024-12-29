@@ -15,7 +15,9 @@ RUN pdm install --no-lock --no-editable
 # Run stage
 FROM python:$PYTHON_BASE
 
-RUN apt update -y && apt install ffmpeg -y
+RUN apt update -y && apt install ffmpeg -y && apt install -y tzdata \
+&& ln -fs /usr/share/zoneinfo/America/Bahia /etc/localtime \
+&& dpkg-reconfigure --frontend noninteractive tzdata
 
 # Copy application files
 COPY src /src

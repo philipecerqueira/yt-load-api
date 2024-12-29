@@ -5,7 +5,16 @@ description = "download media"
 authors = [
     {name = "philipecerqueira", email = "philipe.cerq@gmail.com"},
 ]
-dependencies = ["pydub>=0.25.1", "fastapi>=0.115.5", "uvicorn>=0.32.0", "ruff>=0.7.4", "pytubefix>=8.4.0", "pre-commit>=4.0.1", "python-dotenv>=1.0.1"]
+dependencies = [
+    "pydub>=0.25.1",
+    "fastapi>=0.115.5",
+    "uvicorn>=0.32.0",
+    "ruff>=0.7.4",
+    "pytubefix>=8.4.0",
+    "pre-commit>=4.0.1",
+    "python-dotenv>=1.0.1",
+    "logging>=0.4.9.6",
+]
 requires-python = "==3.12.*"
 readme = "README.md"
 license = {text = "MIT"}

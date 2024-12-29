@@ -1,5 +1,6 @@
 import os
 import time
+from enum import Enum
 from typing import Optional
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException
@@ -7,6 +8,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 from src.services.download_audio import download_audio_service
+from src.services.download_video import download_video_service
 from src.utils.logger_config import get_logger
 from src.utils.remove_file import remove_file
 
@@ -14,39 +16,63 @@ logger = get_logger(__name__)
 router = APIRouter()
 
 
+class FileType(str, Enum):
+    mp3 = "mp3"
+    mp4 = "mp4"
+
+
 class DownloadRequest(BaseModel):
     url: str
-    filename: Optional[str] = None
+    file_type: Optional[FileType] = FileType.mp3
 
 
-@router.get("/download/audio")
-async def download_audio(
-    background_tasks: BackgroundTasks, url: str, filename: Optional[str] = None
+@router.get("/download")
+async def download(
+    background_tasks: BackgroundTasks,
+    url: str,
+    file_type: Optional[FileType] = FileType.mp3,
 ) -> FileResponse:
     """
-    Baixa o áudio do YouTube e retorna um arquivo MP3 para download.
+    Baixa um arquivo (áudio ou vídeo) do YouTube e retorna o arquivo para download.
 
     - **url**: URL do vídeo do YouTube
-    - **filename**: Nome opcional para o arquivo de áudio
+    - **file_type**: Tipo de arquivo, pode ser 'mp3' para áudio ou 'mp4' para vídeo (padrão 'mp3')
     """
     start_time = time.perf_counter()
-    logger.info(
-        f"Requisição recebida: /download/audio, params: url={url}, filename={filename}"
-    )
+    logger.info(f"Requisição recebida, params: url={url}, file_type={file_type}")
 
     try:
-        mp3_file = download_audio_service(url, filename)
-        logger.info(f"Áudio baixado com sucesso: {mp3_file}")
+        file_type_mapping = {
+            FileType.mp3: {
+                "service": download_audio_service,
+                "media_type": "audio/mpeg",
+                "extension": "mp3",
+            },
+            FileType.mp4: {
+                "service": download_video_service,
+                "media_type": "video/mp4",
+                "extension": "mp4",
+            },
+        }
 
-        background_tasks.add_task(remove_file, mp3_file)
-        logger.info(f"Tarefa de remoção agendada para o arquivo: {mp3_file}")
+        file_info = file_type_mapping[file_type]
+
+        file_path = file_info["service"](url)
+        media_type = file_info["media_type"]
+        file_extension = file_info["extension"]
+        logger.info(
+            f"Arquivo {file_extension.upper()} baixado com sucesso: {file_path}"
+        )
+
+        background_tasks.add_task(remove_file, file_path)
+        logger.info(f"Tarefa de remoção agendada para o arquivo: {file_path}")
 
         end_time = time.perf_counter()
         elapsed_time = end_time - start_time
         logger.info(f"Requisição finalizada. Tempo total: {elapsed_time:.2f} segundos")
 
         return FileResponse(
-            mp3_file, media_type="audio/mpeg", filename=os.path.basename(mp3_file)
+            file_path, media_type=media_type, filename=os.path.basename(file_path)
         )
     except Exception as e:
         end_time = time.perf_counter()

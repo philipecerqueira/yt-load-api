@@ -63,6 +63,11 @@ async def download(
         return FileResponse(
             file_path, media_type=media_type, filename=os.path.basename(file_path)
         )
+
+    except ValueError as ve:
+        logger.warning(f"Erro de validação: {ve}")
+        raise HTTPException(status_code=400, detail=str(ve))
+
     except Exception as e:
         end_time = time.perf_counter()
         elapsed_time = end_time - start_time
